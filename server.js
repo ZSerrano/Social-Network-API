@@ -68,3 +68,23 @@ app.get("/readThoughts", (req, res) => {
       res.send(results);
     });
 });
+
+app.delete("/deleteUser", (req, res) => {
+  db.collection("userCollection").deleteOne(
+    { _id: ObjectId(req.body.id) },
+    (err) => {
+      if (err) throw err;
+      res.send("User deleted.");
+    }
+  );
+});
+
+app.delete("/deleteThought", (req, res) => {
+  db.collection("thoughtCollection").deleteOne(
+    { _id: ObjectId(req.body.id) },
+    (err) => {
+      if (err) throw err;
+      res.send("Thought deleted.");
+    }
+  );
+});
