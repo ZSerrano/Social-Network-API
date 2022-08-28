@@ -1,5 +1,6 @@
 const express = require("express");
 const mongodb = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 
 const app = express();
 const port = 3001;
@@ -37,7 +38,7 @@ app.post("/createUser", (req, res) => {
 });
 
 app.post("/createThought", (req, res) => {
-  db.collection("thoughtCollection").insertOne(
+  db.collection("thoughtsCollection").insertOne(
     {
       thoughtText: req.body.thoughtText,
       createdAt: req.body.createdAt,
@@ -56,18 +57,22 @@ app.get("/readUsers", (req, res) => {
     .find()
     .toArray((err, results) => {
       if (err) throw err;
-      res.send(results);
+      res.json(results);
     });
 });
 
 app.get("/readThoughts", (req, res) => {
-  db.collection("thoughtCollection")
+  db.collection("thoughtsCollection")
     .find()
     .toArray((err, results) => {
       if (err) throw err;
-      res.send(results);
+      res.json(results);
     });
 });
+
+// app.put("/updateUser", (req, res) => {
+//   db.collection("userCollection").updateOne({username});
+// });
 
 app.delete("/deleteUser", (req, res) => {
   db.collection("userCollection").deleteOne(
@@ -80,7 +85,7 @@ app.delete("/deleteUser", (req, res) => {
 });
 
 app.delete("/deleteThought", (req, res) => {
-  db.collection("thoughtCollection").deleteOne(
+  db.collection("thoughtsCollection").deleteOne(
     { _id: ObjectId(req.body.id) },
     (err) => {
       if (err) throw err;
